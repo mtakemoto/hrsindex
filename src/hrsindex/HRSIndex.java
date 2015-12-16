@@ -35,8 +35,8 @@ public class HRSIndex extends Application {
     private final WebEngine webEngine = browser.getEngine();
 
     @Override
-    public void start(Stage primaryStage) {
-
+    public void start(Stage window) {
+        
         Link[] hhcaSections = compileStatute(HHCA_URL, "hhca");
         Link[] hrs171Sections = compileStatute(HRS171_URL, "hrs");
         String workingDir = System.getProperty("user.dir").replace("\\", "/");
@@ -45,8 +45,8 @@ public class HRSIndex extends Application {
 
         //Sidebar Init
         Accordion sidebar = new Accordion();
-        TitledPane tpHhca = new TitledPane("HHCA", addLinks(hhcaSections, primaryStage));
-        TitledPane tpHrs = new TitledPane("HRS171", addLinks(hrs171Sections, primaryStage));
+        TitledPane tpHhca = new TitledPane("HHCA", addLinks(hhcaSections, window));
+        TitledPane tpHrs = new TitledPane("HRS171", addLinks(hrs171Sections, window));
         TitledPane tpRules = new TitledPane("Rules", addFiles(workingDir + "/rules"));
         sidebar.getPanes().addAll(tpHhca, tpHrs, tpRules);
         
@@ -66,12 +66,14 @@ public class HRSIndex extends Application {
         sidebar.setMaxWidth(300);
         sidebar.setMinWidth(150);
         sidebar.setExpandedPane(tpHhca);
+        window.setHeight(600); 
+        window.setWidth(900);
         
         //Run program
         Scene scene = new Scene(root);
-        primaryStage.setTitle("Hawaii Revised Statutes");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        window.setTitle("Hawaii Revised Statutes");
+        window.setScene(scene);
+        window.show();
     }
 
     /**
