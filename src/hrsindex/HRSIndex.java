@@ -47,7 +47,7 @@ public class HRSIndex extends Application {
         Accordion sidebar = new Accordion();
         TitledPane tpHhca = new TitledPane("HHCA", addLinks(hhcaSections, window));
         TitledPane tpHrs = new TitledPane("HRS171", addLinks(hrs171Sections, window));
-        TitledPane tpRules = new TitledPane("Rules", addFiles(workingDir + "/rules"));
+        TitledPane tpRules = new TitledPane("Rules", addFiles(workingDir + "/resources/rules"));
         sidebar.getPanes().addAll(tpHhca, tpHrs, tpRules);
         
         //Menu bar init
@@ -132,7 +132,7 @@ public class HRSIndex extends Application {
                     Desktop.getDesktop().open(file);
                 } catch(IOException ex) {
                     System.out.println("Failed to open file");
-                    System.exit(0);
+                    System.exit(-1);
                 } 
             }
         });
@@ -145,6 +145,11 @@ public class HRSIndex extends Application {
         File folder = new File(directory);
         File[] fileList = folder.listFiles();
 
+        if(fileList == null) {
+            System.err.println("Static resource path " + directory + " not found");
+            System.exit(-1);
+        }
+        
         for (int i = 0; i < fileList.length; i++) {
             if (fileList[i].isFile()) {
                 String fileName = fileList[i].getName();
