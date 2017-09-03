@@ -29,7 +29,7 @@ import javafx.scene.layout.Priority;
  */
 public class HRSIndex extends Application {
 
-    private static final String HHCA_URL = "http://www.capitol.hawaii.gov/hrscurrent/Vol01_Ch0001-0042F/HHCA/";
+    private static final String HHCA_URL = "http://www.capitol.hawaii.gov/hrscurrent/Vol01_Ch0001-0042F/06-HHCA/";
     private static final String HRS171_URL = "http://www.capitol.hawaii.gov/hrscurrent/Vol03_Ch0121-0200D/HRS0171/";
     private final WebView browser = new WebView();
     private final WebEngine webEngine = browser.getEngine();
@@ -95,6 +95,7 @@ public class HRSIndex extends Application {
                 i++;
             }
         } catch (IOException ex) {
+            System.err.println(ex);
             System.exit(0);
         }
         return statute;
