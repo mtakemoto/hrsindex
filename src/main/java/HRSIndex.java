@@ -5,10 +5,7 @@
  */
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -61,7 +58,7 @@ public class HRSIndex extends Application {
         root.getChildren().addAll(menuBar, mainContainer);
           
         //Settings
-        root.setVgrow(mainContainer, Priority.ALWAYS);
+        VBox.setVgrow(mainContainer, Priority.ALWAYS);
         sidebar.setMaxWidth(300);
         sidebar.setMinWidth(150);
         sidebar.setExpandedPane(tpHhca);
@@ -82,7 +79,7 @@ public class HRSIndex extends Application {
         launch(args);
     }
 
-    public Link[] compileStatute(String url, String filter) {
+    private Link[] compileStatute(String url, String filter) {
         Link[] statute = new Link[0];
         try {
             Document doc = Jsoup.connect(url).get();
@@ -94,45 +91,39 @@ public class HRSIndex extends Application {
                 i++;
             }
         } catch (IOException ex) {
-            System.err.println(ex);
+            System.err.println(ex.toString());
             System.exit(0);
         }
         return statute;
     }
 
-    private ScrollPane addLinks(final Link[] statute, Stage stage) {
+    private ScrollPane addLinks(final Link[] statuteList, Stage stage) {
         ScrollPane scrollPane = new ScrollPane();
         VBox container = new VBox();
         scrollPane.setContent(container);
-        for (int i = 0; i < statute.length; i++) {
-            final Hyperlink section = new Hyperlink(statute[i].getSection());
+        for (Link statute : statuteList) {
+            final Hyperlink section = new Hyperlink(statute.getSection());
             Separator hDivider = new Separator();
-            setHyperlinkWeb(section, statute[i], stage);
+            setHyperlinkWeb(section, statute, stage);
             container.getChildren().addAll(section, hDivider);
         }
         return scrollPane;
     }
 
     private void setHyperlinkWeb(final Hyperlink hyperlink, final Link statute, final Stage stage) {
-        hyperlink.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                webEngine.load(statute.getURL());
-                stage.setTitle("Hawaii Revised Statutes: "+ statute.getName());
-            }
+        hyperlink.setOnAction(e -> {
+            webEngine.load(statute.getURL());
+            stage.setTitle("Hawaii Revised Statutes: "+ statute.getName());
         });
     }
     
     private void setHyperlinkFile(Hyperlink hyperlink, final File file) {
-        hyperlink.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                try {
-                    Desktop.getDesktop().open(file);
-                } catch(IOException ex) {
-                    System.out.println("Failed to open file");
-                    System.exit(-1);
-                } 
+        hyperlink.setOnAction(e -> {
+            try {
+                Desktop.getDesktop().open(file);
+            } catch(IOException ex) {
+                System.out.println("Failed to open file");
+                System.exit(-1);
             }
         });
     }
@@ -148,19 +139,18 @@ public class HRSIndex extends Application {
             System.err.println("Static resource path " + directory + " not found");
             System.exit(-1);
         }
-        
-        for (int i = 0; i < fileList.length; i++) {
-            if (fileList[i].isFile()) {
-                String fileName = fileList[i].getName();
+
+        for (File aFileList : fileList) {
+            if (aFileList.isFile()) {
+                String fileName = aFileList.getName();
                 Hyperlink hyperlink = new Hyperlink(fileName.substring(0, fileName.indexOf(".")));
                 Separator hDivider = new Separator();
                 String ext = fileName.substring(fileName.lastIndexOf(".") + 1); //Search for "." from right to left
 
                 if (ext.equalsIgnoreCase("htm") || ext.equalsIgnoreCase("html")) {
                     //setHyperlinkWeb(hyperlink, directory + fileName);
-                }
-                else { //Open in designated external app
-                    setHyperlinkFile(hyperlink, fileList[i]);
+                } else { //Open in designated external app
+                    setHyperlinkFile(hyperlink, aFileList);
                 }
                 container.getChildren().addAll(hyperlink, hDivider);
             }

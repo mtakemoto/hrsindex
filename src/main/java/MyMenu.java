@@ -8,8 +8,6 @@
  *
  * @author Matt
  */
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -26,11 +24,7 @@ public class MyMenu extends MenuBar {
 
     private void fileInit(Menu menu) {
         MenuItem exit = new MenuItem("Exit");
-        exit.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-                System.exit(0);
-            }
-        });
+        exit.setOnAction(t -> System.exit(0));
         
         menu.getItems().addAll(exit);
     }
