@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 
-package hrsindex;
-
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
