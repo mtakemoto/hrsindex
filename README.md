@@ -1,5 +1,6 @@
-Hawaii Revised Statutes Indexer
+Hawaii Revised Statutes Indexer 
 ===============================
+[![Build Status](https://travis-ci.org/mtakemoto/hrsindex.svg?branch=master)](https://travis-ci.org/mtakemoto/hrsindex)
 
 ### Description
 Crawls through a specified URL on capitol.hawaii.gov and provides a table of contents for viewing all of a single volume at once instead of clicking through URLs.  
